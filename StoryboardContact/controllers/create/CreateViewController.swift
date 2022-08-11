@@ -7,15 +7,29 @@
 
 import UIKit
 
-class CreateViewController: BaseViewController {
+
+protocol CreateRequestProtocol{
+    func apiContactCreate(contact: Contact)
+    
+    func leftButton()
+}
+
+protocol CreateResponseProtocol{
+    func onContactCreate(isCreated: Bool)
+}
+
+class CreateViewController: BaseViewController, CreateResponseProtocol{
 
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var phoneTextField: UITextField!
+    
     @IBAction func addButton(_ sender: Any) {
-        apiPostCreate()
+        presenter?.apiContactCreate(contact: Contact(name: nameTextField.text!, phone: phoneTextField.text!))
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
     }
     @IBOutlet weak var button1: UIButton!
+    
+    var presenter: CreateRequestProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +39,24 @@ class CreateViewController: BaseViewController {
 
     func initViews(){
         initNavigation()
+        configureViper()
         button1.layer.cornerRadius = 15
+    }
+    
+    func configureViper(){
+        let manager = HttpManager()
+        let presenter = CreatePresenter()
+        let interactor = CreateInteractor()
+        let routing = CreateRouting()
+        
+        presenter.controller = self
+        
+        self.presenter = presenter
+        presenter.interactor = interactor
+        presenter.routing = routing
+        routing.viewController = self
+        interactor.manager = manager
+        interactor.response = self
     }
     
     func initNavigation(){
@@ -39,17 +70,11 @@ class CreateViewController: BaseViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    func apiPostCreate(){
-        showProgress()
-        AFHttp.post(url: AFHttp.API_CONTACT_CREATE, params: AFHttp.paramsContactCreate(contact: Contact(name: nameTextField.text!, phone: phoneTextField.text!)), handler: {response in
+    func onContactCreate(isCreated: Bool) {
+        if isCreated {
             self.hideProgress()
-            switch response.result{
-            case .success:
-                print(response.result)
-                self.navigationController?.popViewController(animated: true)
-            case let .failure(error):
-                print(error)
-            }
-        })
+            navigationController?.popViewController(animated: true)
+        }
     }
+    
 }
