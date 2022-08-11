@@ -67,7 +67,14 @@ class AFHttp {
         return parameters
     }
     
-    class func paramsPostUpdate(contact: Contact) -> Parameters {
+    class func paramsContactWith(id: Int) -> Parameters{
+        let parameters: Parameters = [
+            "id": id,
+        ]
+        return parameters
+    }
+    
+    class func paramsContactUpdate(contact: Contact) -> Parameters {
         let parameters: Parameters = [
             "id": contact.id!,
             "name": contact.name!,

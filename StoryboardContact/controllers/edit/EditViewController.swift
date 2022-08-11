@@ -57,7 +57,7 @@ class EditViewController: BaseViewController {
     
     func apiContactEdit(contactId: String){
         showProgress()
-        AFHttp.put(url: AFHttp.API_CONTACT_UPDATE + contactId, params: AFHttp.paramsPostUpdate(contact: Contact(name: nameTextField.text!, phone: phoneTextField.text!)), handler: {response in
+        AFHttp.put(url: AFHttp.API_CONTACT_UPDATE + contactId, params: AFHttp.paramsContactUpdate(contact: Contact(name: nameTextField.text!, phone: phoneTextField.text!)), handler: {response in
             switch response.result{
             case .success:
                 print(response.result)

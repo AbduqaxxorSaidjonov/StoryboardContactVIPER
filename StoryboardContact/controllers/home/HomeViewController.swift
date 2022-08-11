@@ -7,26 +7,60 @@
 
 import UIKit
 
-class HomeViewController: BaseViewController, UITableViewDelegate,  UITableViewDataSource {
+
+protocol HomeRequestProtocol{
+    func apiContactList()
+    func apiContactDelete(contact: Contact)
     
+    func navigateCreateScreen()
+    func navigateEditScreen()
+}
+
+protocol HomeResponseProtocol{
+    func onContactList(contacts: [Contact])
+    func onContactDelete(isDeleted: Bool)
+}
+
+
+
+class HomeViewController: BaseViewController, UITableViewDelegate,  UITableViewDataSource, HomeResponseProtocol{
+    
+    var presenter: HomeRequestProtocol!
 
     @IBOutlet weak var tableView: UITableView!
     var items : Array<Contact> = Array()
-
+    var postId: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initViews()
     }
 
-
+    func refreshTableView(contacts: [Contact]){
+        self.items = contacts
+        self.tableView.reloadData()
+    }
+    
+    func onContactList(contacts: [Contact]){
+        self.hideProgress()
+        self.refreshTableView(contacts: contacts)
+    }
+    
+    func onContactDelete(isDeleted: Bool){
+        self.hideProgress()
+        presenter.apiContactList()
+    }
+    
     func initViews(){
         tableView.dataSource = self
         tableView.delegate = self
         initNavigation()
-        apiContactList()
+        configureViper()
+        presenter?.apiContactList()
         refreshView()
     }
 
+    
     func initNavigation(){
         let refresh = UIImage(named: "ic_refresh")
         let add = UIImage(named: "ic_add")
@@ -34,6 +68,22 @@ class HomeViewController: BaseViewController, UITableViewDelegate,  UITableViewD
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: refresh, style: .plain, target: self, action: #selector(leftTapped))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: add, style: .plain, target: self, action: #selector(rightTapped))
         title = "Storyboard Contact"
+    }
+    
+    func configureViper(){
+        let manager = HttpManager()
+        let presenter = HomePresenter()
+        let interactor = HomeInteractor()
+        let routing = HomeRouting()
+        
+        presenter.controller = self
+        
+        self.presenter = presenter
+        presenter.interactor = interactor
+        presenter.routing = routing
+        routing.viewController = self
+        interactor.manager = manager
+        interactor.response = self
     }
     
     func callCreateViewController(){
@@ -48,44 +98,15 @@ class HomeViewController: BaseViewController, UITableViewDelegate,  UITableViewD
         self.present(navigationController, animated: true, completion: nil)
     }
     
-    func apiContactList(){
-        showProgress()
-        AFHttp.get(url: AFHttp.API_CONTACT_LIST, params: AFHttp.paramsEmpty(), handler: {response in
-            self.hideProgress()
-            switch response.result{
-            case .success:
-                let contacts = try! JSONDecoder().decode([Contact].self, from: response.data!)
-                self.refreshTableView(contacts: contacts)
-            case let .failure(error):
-                print(error)
-            }
-        })
-    }
-    
-    func apiContactDelete(contact: Contact){
-        showProgress()
-        AFHttp.del(url: AFHttp.API_CONTACT_DELETE + contact.id!, params: AFHttp.paramsEmpty(), handler: { response in
-            self.hideProgress()
-            switch response.result{
-            case .success:
-                print(response.result)
-                self.apiContactList()
-            case let .failure(error):
-                print(error)
-            }
-        })
-    }
-    
     func refreshView(){
         NotificationCenter.default.addObserver(self, selector: #selector(doThisWhenNotifyLoad(notification: )), name: NSNotification.Name(rawValue: "load"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(doThisWhenNotifyEdit(notification: )), name: NSNotification.Name(rawValue: "edit"), object: nil)
     }
-
     
     // MARK: - Action
     
     @objc func leftTapped(){
-        apiContactList()
+        presenter?.apiContactList()
     }
     
     @objc func rightTapped(){
@@ -94,20 +115,15 @@ class HomeViewController: BaseViewController, UITableViewDelegate,  UITableViewD
     
     @objc func doThisWhenNotifyLoad(notification : NSNotification) {
             //update tableview
-        apiContactList()
+        presenter?.apiContactList()
     }
     
     @objc func doThisWhenNotifyEdit(notification : NSNotification) {
             //update tableview
-        apiContactList()
+        presenter.apiContactList()
     }
     
     // MARK: - Table View
-    
-    func refreshTableView(contacts: [Contact]){
-        self.items = contacts
-        self.tableView.reloadData()
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return items.count
@@ -136,7 +152,7 @@ class HomeViewController: BaseViewController, UITableViewDelegate,  UITableViewD
         return UIContextualAction(style: .destructive, title: "Delete"){ (action, swipeButtonView, completion) in
             print("Delete Here")
             completion(true)
-            self.apiContactDelete(contact: contact)
+            self.presenter.apiContactDelete(contact: contact)
         }
     }
     
