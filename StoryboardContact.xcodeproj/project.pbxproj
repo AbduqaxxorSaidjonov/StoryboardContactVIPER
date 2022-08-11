@@ -26,6 +26,9 @@
 		76270F702886C41800F5623D /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76270F6F2886C41800F5623D /* Contact.swift */; };
 		76270F742886C53D00F5623D /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76270F722886C53D00F5623D /* ContactTableViewCell.swift */; };
 		76270F752886C53D00F5623D /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76270F732886C53D00F5623D /* ContactTableViewCell.xib */; };
+		76519D3D28A4B19800C1868F /* EditRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76519D3C28A4B19800C1868F /* EditRouting.swift */; };
+		76519D3F28A4B1A300C1868F /* EditPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76519D3E28A4B1A300C1868F /* EditPresenter.swift */; };
+		76519D4128A4B1B100C1868F /* EditInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76519D4028A4B1B100C1868F /* EditInteractor.swift */; };
 		76E04A0128A48EC0004636DB /* HomeRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E04A0028A48EC0004636DB /* HomeRouting.swift */; };
 		76E04A0328A48ECC004636DB /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E04A0228A48ECC004636DB /* HomePresenter.swift */; };
 		76E04A0528A48ED6004636DB /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E04A0428A48ED6004636DB /* HomeInteractor.swift */; };
@@ -76,6 +79,9 @@
 		76270F6F2886C41800F5623D /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		76270F722886C53D00F5623D /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		76270F732886C53D00F5623D /* ContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
+		76519D3C28A4B19800C1868F /* EditRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRouting.swift; sourceTree = "<group>"; };
+		76519D3E28A4B1A300C1868F /* EditPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPresenter.swift; sourceTree = "<group>"; };
+		76519D4028A4B1B100C1868F /* EditInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInteractor.swift; sourceTree = "<group>"; };
 		76E04A0028A48EC0004636DB /* HomeRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouting.swift; sourceTree = "<group>"; };
 		76E04A0228A48ECC004636DB /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
 		76E04A0428A48ED6004636DB /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
@@ -227,6 +233,9 @@
 			children = (
 				76270F6B2886C29F00F5623D /* EditViewController.swift */,
 				76270F6C2886C29F00F5623D /* EditViewController.xib */,
+				76519D3C28A4B19800C1868F /* EditRouting.swift */,
+				76519D3E28A4B1A300C1868F /* EditPresenter.swift */,
+				76519D4028A4B1B100C1868F /* EditInteractor.swift */,
 			);
 			path = edit;
 			sourceTree = "<group>";
@@ -386,6 +395,7 @@
 				76270F662886C25D00F5623D /* BaseViewController.swift in Sources */,
 				76E04A0728A493E0004636DB /* HttpManager.swift in Sources */,
 				76E04A0128A48EC0004636DB /* HomeRouting.swift in Sources */,
+				76519D4128A4B1B100C1868F /* EditInteractor.swift in Sources */,
 				76E9B775288A4B6D002C50C0 /* Networking.swift in Sources */,
 				76E04A0328A48ECC004636DB /* HomePresenter.swift in Sources */,
 				76270F2C2886C08D00F5623D /* AppDelegate.swift in Sources */,
@@ -393,7 +403,9 @@
 				76270F2E2886C08D00F5623D /* SceneDelegate.swift in Sources */,
 				76E04A0528A48ED6004636DB /* HomeInteractor.swift in Sources */,
 				76270F702886C41800F5623D /* Contact.swift in Sources */,
+				76519D3D28A4B19800C1868F /* EditRouting.swift in Sources */,
 				76270F362886C08D00F5623D /* StoryboardContact.xcdatamodeld in Sources */,
+				76519D3F28A4B1A300C1868F /* EditPresenter.swift in Sources */,
 				76270F742886C53D00F5623D /* ContactTableViewCell.swift in Sources */,
 				76270F632886C0F800F5623D /* HomeViewController.swift in Sources */,
 				76270F6D2886C29F00F5623D /* EditViewController.swift in Sources */,
